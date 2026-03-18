@@ -19,7 +19,7 @@ resource "kubernetes_namespace" "demo" {
     name = var.namespace
     labels = {
       "app.kubernetes.io/managed-by" = "terraform"
-      "demo"                         = "cortex-drift-detection"
+      "demo"                         = "cortex-drift-detection-yor"
     }
   }
 }
