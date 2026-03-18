@@ -29,7 +29,7 @@ resource "kubernetes_deployment" "nginx" {
     name      = "nginx-deployment-yor"
     namespace = kubernetes_namespace.demo.metadata[0].name
     labels = {
-      app = "nginx"
+      app   = "nginx"
       owner = "schnitz"
     }
   }
