@@ -26,6 +26,9 @@ jobs:
       with:
         terraform_version: "1.5.7"
 
+    - name: Check GitHub API Rate Limit (Diagnostic)
+      run: curl -s https://api.github.com/rate_limit
+
     - name: Run Yor
       uses: bridgecrewio/yor-action@main
       with:
