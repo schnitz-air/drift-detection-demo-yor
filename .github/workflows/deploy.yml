@@ -33,7 +33,6 @@ jobs:
       uses: bridgecrewio/yor-action@main
       with:
         directory: "terraform"
-        args: "--skip-resource-types kubernetes_namespace,kubernetes_deployment,kubernetes_service"
 
     - name: Terraform Format
       run: terraform fmt
