@@ -17,10 +17,20 @@ provider "kubernetes" {
   config_path = "~/.kube/config"
 }
 
+resource "kubernetes_namespace" "demo" {
+  metadata {
+    name = var.namespace
+    labels = {
+      "app.kubernetes.io/managed-by" = "terraform"
+      "demo"                         = "cortex-drift-detection-yor"
+    }
+  }
+}
+
 resource "kubernetes_deployment" "nginx" {
   metadata {
     name      = "nginx-deployment-yor"
-    namespace = var.namespace
+    namespace = kubernetes_namespace.demo.metadata[0].name
     labels = {
       app   = "nginx"
       owner = "schnitz"
@@ -71,7 +81,7 @@ resource "kubernetes_deployment" "nginx" {
 resource "kubernetes_service" "nginx" {
   metadata {
     name      = "nginx-service-yor"
-    namespace = var.namespace
+    namespace = kubernetes_namespace.demo.metadata[0].name
   }
   spec {
     selector = {

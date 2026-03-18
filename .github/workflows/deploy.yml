@@ -73,6 +73,11 @@ jobs:
 
     - name: Import Existing Resources
       run: |
+        # Check if namespace exists and import if it does
+        if kubectl get namespace cortex-drift-demo-yor; then
+          terraform import kubernetes_namespace.demo cortex-drift-demo-yor || true
+        fi
+
         # Check if deployment exists and import if it does
         if kubectl get deployment nginx-deployment-yor -n cortex-drift-demo-yor; then
           terraform import kubernetes_deployment.nginx cortex-drift-demo-yor/nginx-deployment-yor || true
