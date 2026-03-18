@@ -29,10 +29,17 @@ resource "aws_s3_bucket" "demo_bucket" {
   bucket = "aschnitzer-drift-detection-demo-yor-tags"
 
   tags = {
-    Name        = "drift-detection-demo-bucket"
-    Environment = "Dev"
-    yor_name    = "demo_bucket"
-    yor_trace   = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
+    Name                 = "drift-detection-demo-bucket"
+    Environment          = "Dev"
+    yor_name             = "demo_bucket"
+    yor_trace            = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
+    git_commit           = "b73e5bc222f20a94cbea4d5e439256673b55850b"
+    git_file             = "terraform/main.tf"
+    git_last_modified_at = "2026-03-18 20:44:17"
+    git_last_modified_by = "amit.schnitzer@gmail.com"
+    git_modifiers        = "amit.schnitzer"
+    git_org              = "schnitz-air"
+    git_repo             = "drift-detection-demo-yor"
   }
 }
 
