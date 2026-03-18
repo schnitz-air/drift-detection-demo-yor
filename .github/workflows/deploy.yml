@@ -73,19 +73,25 @@ jobs:
 
     - name: Import Existing Resources
       run: |
-        # Check if namespace exists and import if it does
-        if kubectl get namespace cortex-drift-demo-yor; then
-          terraform import kubernetes_namespace.demo cortex-drift-demo-yor || true
+        # Check if namespace exists in cluster and NOT in state
+        if kubectl get namespace cortex-drift-demo-yor >/dev/null 2>&1; then
+          if ! terraform state list | grep -q "^kubernetes_namespace\.demo$"; then
+            terraform import kubernetes_namespace.demo cortex-drift-demo-yor
+          fi
         fi
 
-        # Check if deployment exists and import if it does
-        if kubectl get deployment nginx-deployment-yor -n cortex-drift-demo-yor; then
-          terraform import kubernetes_deployment.nginx cortex-drift-demo-yor/nginx-deployment-yor || true
+        # Check if deployment exists in cluster and NOT in state
+        if kubectl get deployment nginx-deployment-yor -n cortex-drift-demo-yor >/dev/null 2>&1; then
+          if ! terraform state list | grep -q "^kubernetes_deployment\.nginx$"; then
+            terraform import kubernetes_deployment.nginx cortex-drift-demo-yor/nginx-deployment-yor
+          fi
         fi
         
-        # Check if service exists and import if it does
-        if kubectl get service nginx-service-yor -n cortex-drift-demo-yor; then
-          terraform import kubernetes_service.nginx cortex-drift-demo-yor/nginx-service-yor || true
+        # Check if service exists in cluster and NOT in state
+        if kubectl get service nginx-service-yor -n cortex-drift-demo-yor >/dev/null 2>&1; then
+          if ! terraform state list | grep -q "^kubernetes_service\.nginx$"; then
+            terraform import kubernetes_service.nginx cortex-drift-demo-yor/nginx-service-yor
+          fi
         fi
 
     - name: Terraform Format
