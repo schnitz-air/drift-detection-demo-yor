@@ -120,3 +120,5 @@ resource "kubernetes_service" "nginx" {
     type = "ClusterIP"
   }
 }
+
+# Trigger scan 2
