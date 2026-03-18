@@ -71,6 +71,18 @@ jobs:
     - name: Terraform Init
       run: terraform init
 
+    - name: Import Existing Resources
+      run: |
+        # Check if deployment exists and import if it does
+        if kubectl get deployment nginx-deployment-yor -n cortex-drift-demo-yor; then
+          terraform import kubernetes_deployment.nginx cortex-drift-demo-yor/nginx-deployment-yor || true
+        fi
+        
+        # Check if service exists and import if it does
+        if kubectl get service nginx-service-yor -n cortex-drift-demo-yor; then
+          terraform import kubernetes_service.nginx cortex-drift-demo-yor/nginx-service-yor || true
+        fi
+
     - name: Terraform Format
       run: terraform fmt -check
 
