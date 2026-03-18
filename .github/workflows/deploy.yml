@@ -31,6 +31,9 @@ jobs:
       with:
         directory: "terraform"
 
+    - name: Terraform Format
+      run: terraform fmt
+
     - name: Commit Yor Tags
       run: |
         git config --global user.name "github-actions[bot]"
