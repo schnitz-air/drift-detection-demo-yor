@@ -6,8 +6,11 @@ terraform {
     }
   }
 
-  # For a real production setup, you would configure a remote backend here
-  # backend "s3" {} or backend "gcs" {}
+  backend "s3" {
+    bucket = "aschnitzer-drift-detection-demo"
+    key    = "terraform/state"
+    region = "us-east-1"
+  }
 }
 
 provider "kubernetes" {
