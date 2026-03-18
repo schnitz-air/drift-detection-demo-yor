@@ -31,7 +31,9 @@ resource "aws_vpc" "demo_vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name = "drift-detection-demo-vpc"
+    Name      = "drift-detection-demo-vpc"
+    yor_name  = "demo_vpc"
+    yor_trace = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
   }
 }
 
