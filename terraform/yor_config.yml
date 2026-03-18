@@ -1,0 +1,5 @@
+tag_groups:
+  custom:
+    tags:
+      - name: yor_trace
+        type: yor_trace
