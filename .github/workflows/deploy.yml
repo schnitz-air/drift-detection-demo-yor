@@ -94,6 +94,13 @@ jobs:
           fi
         fi
 
+        # Check if S3 bucket exists and NOT in state
+        if aws s3api head-bucket --bucket aschnitzer-drift-detection-demo-yor-tags 2>/dev/null; then
+          if ! terraform state list | grep -q "^aws_s3_bucket\.demo_bucket$"; then
+            terraform import aws_s3_bucket.demo_bucket aschnitzer-drift-detection-demo-yor-tags
+          fi
+        fi
+
     - name: Terraform Format
       run: terraform fmt -check
 

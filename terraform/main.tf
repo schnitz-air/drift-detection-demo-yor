@@ -25,15 +25,14 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_vpc" "demo_vpc" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+resource "aws_s3_bucket" "demo_bucket" {
+  bucket = "aschnitzer-drift-detection-demo-yor-tags"
 
   tags = {
-    Name      = "drift-detection-demo-vpc"
-    yor_name  = "demo_vpc"
-    yor_trace = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
+    Name        = "drift-detection-demo-bucket"
+    Environment = "Dev"
+    yor_name    = "demo_bucket"
+    yor_trace   = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
   }
 }
 
