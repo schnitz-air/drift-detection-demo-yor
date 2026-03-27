@@ -8,3 +8,7 @@ Resources:
       Tags:
         - Key: Environment
           Value: Dev
+        - Key: yor_trace
+          Value: e712e53a-d146-422c-b417-653e30c99756
+        - Key: yor_name
+          Value: S3Bucket
