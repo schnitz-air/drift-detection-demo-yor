@@ -6,6 +6,11 @@ on:
       - main
     paths:
       - 'terraform/**'
+      - 'k8s/**'
+      - 'helm/**'
+      - 'cloudformation/**'
+      - 'azure/**'
+      - 'Dockerfile'
       - '.github/workflows/deploy.yml'
   workflow_dispatch: # Allow manual triggering
 
@@ -35,7 +40,7 @@ jobs:
     - name: Run Yor
       uses: bridgecrewio/yor-action@main
       with:
-        directory: "terraform"
+        directory: "."
 
     - name: Terraform Format
       run: terraform fmt
