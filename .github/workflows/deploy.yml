@@ -1,120 +1,14 @@
-name: Deploy Infrastructure
+name: Placeholder Workflow
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'terraform/**'
-      - 'k8s/**'
-      - 'helm/**'
-      - 'cloudformation/**'
-      - 'azure/**'
-      - 'Dockerfile'
-      - '.github/workflows/deploy.yml'
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch:
 
 jobs:
-  terraform:
-    name: 'Terraform Apply'
+  placeholder:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./terraform
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-          fetch-depth: 0  # <--- THIS IS THE KEY FIX
-          ref: ${{ github.head_ref }}
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: "1.5.7"
-
-    - name: Check GitHub API Rate Limit (Diagnostic)
-      run: curl -s https://api.github.com/rate_limit
-
-    - name: Run Yor
-      uses: bridgecrewio/yor-action@main
-      with:
-        directory: "."
-
-    - name: Terraform Format
-      run: terraform fmt
-
-    - name: Commit Yor Tags
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        if [ -n "$(git status --porcelain)" ]; then
-          git commit -m "chore: add yor tags [skip ci]"
-          git pull --rebase origin main
-          git push
-        else
-          echo "No changes to commit"
-        fi
-
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-
-    - name: Install aws-iam-authenticator
-      run: |
-        curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.6.14/aws-iam-authenticator_0.6.14_linux_amd64
-        chmod +x ./aws-iam-authenticator
-        sudo mv ./aws-iam-authenticator /usr/local/bin
-
-    - name: Setup Kubeconfig
-      run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-        chmod 600 ~/.kube/config
-
-    - name: Terraform Init
-      run: terraform init
-
-    - name: Import Existing Resources
-      run: |
-        # Check if namespace exists in cluster and NOT in state
-        if kubectl get namespace cortex-drift-demo-yor >/dev/null 2>&1; then
-          if ! terraform state list | grep -q "^kubernetes_namespace\.demo$"; then
-            terraform import kubernetes_namespace.demo cortex-drift-demo-yor
-          fi
-        fi
-
-        # Check if deployment exists in cluster and NOT in state
-        if kubectl get deployment nginx-deployment-yor -n cortex-drift-demo-yor >/dev/null 2>&1; then
-          if ! terraform state list | grep -q "^kubernetes_deployment\.nginx$"; then
-            terraform import kubernetes_deployment.nginx cortex-drift-demo-yor/nginx-deployment-yor
-          fi
-        fi
-        
-        # Check if service exists in cluster and NOT in state
-        if kubectl get service nginx-service-yor -n cortex-drift-demo-yor >/dev/null 2>&1; then
-          if ! terraform state list | grep -q "^kubernetes_service\.nginx$"; then
-            terraform import kubernetes_service.nginx cortex-drift-demo-yor/nginx-service-yor
-          fi
-        fi
-
-        # Check if S3 bucket exists and NOT in state
-        if aws s3api head-bucket --bucket aschnitzer-drift-detection-demo-yor-tags 2>/dev/null; then
-          if ! terraform state list | grep -q "^aws_s3_bucket\.demo_bucket$"; then
-            terraform import aws_s3_bucket.demo_bucket aschnitzer-drift-detection-demo-yor-tags
-          fi
-        fi
-
-    - name: Terraform Format
-      run: terraform fmt -check
-
-    - name: Terraform Plan
-      run: terraform plan -out=tfplan
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve tfplan
+      - name: Placeholder
+        run: echo "Repository is being reset. Add new IaC files to trigger deployments."
