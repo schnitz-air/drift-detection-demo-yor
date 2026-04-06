@@ -20,9 +20,9 @@ resource "aws_vpc" "drift_demo" {
   tags = {
     Name                 = "drift-detection-demo-bucket"
     Environment          = "Dev"
-    yor_name             = "demo_bucket"
+    yor_name             = "drift_demo"
     yor_trace            = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
-    git_commit           = "b73e5bc222f20a94cbea4d5e439256673b55850b"
+    git_commit           = "fc712ea721ce601f923f01268134459f20e79723"
     git_file             = "terraform/main.tf"
     git_last_modified_at = "2026-04-06 16:49:51"
     git_last_modified_by = "amit.schnitzer@gmail.com"
