@@ -8,7 +8,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "drift-detection-demo-terraform-state"
+    bucket = "aschnitzer-drift-detection-demo"
     key    = "terraform/vpc-state"
     region = "us-east-1"
   }
