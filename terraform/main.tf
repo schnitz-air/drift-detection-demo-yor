@@ -19,7 +19,7 @@ resource "aws_vpc" "drift_demo" {
 
   tags = {
     Name                 = "Drift-Demo-YOR"
-    git_commit           = "fc712ea721ce601f923f01268134459f20e79723"
+    git_commit           = "eee23bcadf2753efa514c19158f354419a59d7cc"
     git_file             = "terraform/main.tf"
     git_last_modified_at = "2026-04-06 16:49:51"
     git_last_modified_by = "amit.schnitzer@gmail.com"
