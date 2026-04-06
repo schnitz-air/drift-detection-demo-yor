@@ -40,7 +40,7 @@ resource "aws_s3_bucket" "drift_bucket" {
     Name                 = "aschnitzer-drift-detection-yor"
     Environment          = "demo"
     yor_name             = "drift_bucket"
-    git_commit           = "8d3d0e320516cd16a0ac1be04efae2a03ca4bd43"
+    git_commit           = "670338fa6b5739b784bb7c49d1550283ce018753"
     git_file             = "terraform/main.tf"
     git_last_modified_at = "2026-04-06 19:42:48"
     git_last_modified_by = "amit.schnitzer@gmail.com"
