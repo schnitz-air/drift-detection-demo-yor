@@ -26,7 +26,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "demo_bucket" {
-  bucket = "Drift-detection-demo-yor-tags"
+  bucket = "aschnitzer-drift-detection-demo-yor-tags"
 
   tags = {
     Name                 = "drift-detection-demo-bucket"
@@ -55,7 +55,7 @@ resource "kubernetes_namespace" "demo" {
 
 resource "kubernetes_deployment" "nginx" {
   metadata {
-    name      = "Drift-detection-demo-yor-nginx-deployment"
+    name      = "drift-detection-demo-yor-nginx-deployment"
     namespace = kubernetes_namespace.demo.metadata[0].name
     labels = {
       app   = "nginx"
@@ -106,7 +106,7 @@ resource "kubernetes_deployment" "nginx" {
 
 resource "kubernetes_service" "nginx" {
   metadata {
-    name      = "Drift-detection-demo-yor-nginx-service"
+    name      = "drift-detection-demo-yor-nginx-service"
     namespace = kubernetes_namespace.demo.metadata[0].name
   }
   spec {
