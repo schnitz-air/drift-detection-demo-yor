@@ -18,44 +18,96 @@ resource "aws_vpc" "drift_demo" {
   enable_dns_support   = true
 
   tags = {
-    Name                 = "Drift-Demo-YOR"
-    git_commit           = "fc712ea721ce601f923f01268134459f20e79723"
+    Name                 = "drift-detection-demo-bucket"
+    Environment          = "Dev"
+    yor_name             = "demo_bucket"
+    yor_trace            = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
+    git_commit           = "b73e5bc222f20a94cbea4d5e439256673b55850b"
     git_file             = "terraform/main.tf"
     git_last_modified_at = "2026-04-06 16:49:51"
     git_last_modified_by = "amit.schnitzer@gmail.com"
     git_modifiers        = "amit.schnitzer"
     git_org              = "schnitz-air"
     git_repo             = "drift-detection-demo-yor"
-    yor_name             = "drift_demo"
-    yor_trace            = "26fbee82-4016-4028-85c1-55566263fef0"
   }
 }
 
-resource "aws_s3_bucket" "drift_bucket" {
-  bucket        = "aschnitzer-drift-detection-yor"
-  force_destroy = true
-
-  tags = {
-    Name        = "aschnitzer-drift-detection-yor"
-    Environment = "demo"
-    yor_name    = "drift_bucket"
+resource "kubernetes_namespace" "demo" {
+  metadata {
+    name = var.namespace
+    labels = {
+      "app.kubernetes.io/managed-by" = "terraform"
+      "demo"                         = "cortex-drift-detection-yor"
+    }
   }
 }
 
-# Misconfiguration: Public access allowed (No Public Access Block)
-# Misconfiguration: No encryption enabled
-# Misconfiguration: No versioning enabled
-# Misconfiguration: ACL set to public-read (if supported by account settings)
-resource "aws_s3_bucket_acl" "drift_bucket_acl" {
-  bucket = aws_s3_bucket.drift_bucket.id
-  acl    = "public-read"
+resource "kubernetes_deployment" "nginx" {
+  metadata {
+    name      = "Drift-detection-demo-yor-nginx-deployment"
+    namespace = kubernetes_namespace.demo.metadata[0].name
+    labels = {
+      app   = "nginx"
+      owner = "schnitz"
+    }
+  }
+
+  spec {
+    replicas = var.replicas
+
+    selector {
+      match_labels = {
+        app = "nginx"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "nginx"
+        }
+      }
+
+      spec {
+        container {
+          image = "nginx:1.25.3"
+          name  = "nginx"
+
+          port {
+            container_port = 81
+          }
+
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-resource "aws_s3_bucket_public_access_block" "drift_bucket_public_access" {
-  bucket = aws_s3_bucket.drift_bucket.id
-
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+resource "kubernetes_service" "nginx" {
+  metadata {
+    name      = "Drift-detection-demo-yor-nginx-service"
+    namespace = kubernetes_namespace.demo.metadata[0].name
+  }
+  spec {
+    selector = {
+      app = kubernetes_deployment.nginx.metadata[0].labels.app
+    }
+    port {
+      port        = 80
+      target_port = 80
+    }
+    type = "ClusterIP"
+  }
 }
+
+# Trigger scan 2
