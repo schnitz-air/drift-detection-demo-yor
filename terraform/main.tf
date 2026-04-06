@@ -8,7 +8,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "drift-detection-demo-yor-terraform-state"
+    bucket = "terraform-state-files"
     key    = "drift-detection-demo-yor/terraform.tfstate"
     region = "us-east-1"
   }
