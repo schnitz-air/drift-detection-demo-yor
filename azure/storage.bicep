@@ -1,5 +1,5 @@
 param location string = resourceGroup().location
-param storageAccountName string = 'st${uniqueString(resourceGroup().id)}'
+param storageAccountName string = 'driftst${uniqueString(resourceGroup().id)}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
