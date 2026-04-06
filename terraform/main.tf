@@ -32,82 +32,31 @@ resource "aws_vpc" "drift_demo" {
   }
 }
 
-resource "kubernetes_namespace" "demo" {
-  metadata {
-    name = var.namespace
-    labels = {
-      "app.kubernetes.io/managed-by" = "terraform"
-      "demo"                         = "cortex-drift-detection-yor"
-    }
+resource "aws_s3_bucket" "drift_bucket" {
+  bucket        = "aschnitzer-drift-detection-yor"
+  force_destroy = true
+
+  tags = {
+    Name        = "aschnitzer-drift-detection-yor"
+    Environment = "demo"
+    yor_name    = "drift_bucket"
   }
 }
 
-resource "kubernetes_deployment" "nginx" {
-  metadata {
-    name      = "Drift-detection-demo-yor-nginx-deployment"
-    namespace = kubernetes_namespace.demo.metadata[0].name
-    labels = {
-      app   = "nginx"
-      owner = "schnitz"
-    }
-  }
-
-  spec {
-    replicas = var.replicas
-
-    selector {
-      match_labels = {
-        app = "nginx"
-      }
-    }
-
-    template {
-      metadata {
-        labels = {
-          app = "nginx"
-        }
-      }
-
-      spec {
-        container {
-          image = "nginx:1.25.3"
-          name  = "nginx"
-
-          port {
-            container_port = 81
-          }
-
-          resources {
-            limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
-            }
-            requests = {
-              cpu    = "250m"
-              memory = "50Mi"
-            }
-          }
-        }
-      }
-    }
-  }
+# Misconfiguration: Public access allowed (No Public Access Block)
+# Misconfiguration: No encryption enabled
+# Misconfiguration: No versioning enabled
+# Misconfiguration: ACL set to public-read (if supported by account settings)
+resource "aws_s3_bucket_acl" "drift_bucket_acl" {
+  bucket = aws_s3_bucket.drift_bucket.id
+  acl    = "public-read"
 }
 
-resource "kubernetes_service" "nginx" {
-  metadata {
-    name      = "Drift-detection-demo-yor-nginx-service"
-    namespace = kubernetes_namespace.demo.metadata[0].name
-  }
-  spec {
-    selector = {
-      app = kubernetes_deployment.nginx.metadata[0].labels.app
-    }
-    port {
-      port        = 80
-      target_port = 80
-    }
-    type = "ClusterIP"
-  }
-}
+resource "aws_s3_bucket_public_access_block" "drift_bucket_public_access" {
+  bucket = aws_s3_bucket.drift_bucket.id
 
-# Trigger scan 2
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
