@@ -8,8 +8,8 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "aschnitzer-drift-detection-demo"
-    key    = "terraform/vpc-state"
+    bucket = "drift-detection-demo-yor-terraform-state"
+    key    = "drift-detection-demo-yor/terraform.tfstate"
     region = "us-east-1"
   }
 }
