@@ -6,12 +6,6 @@ terraform {
       version = "~> 5.0"
     }
   }
-
-  backend "s3" {
-    bucket = "aschnitzer-terraform-state-files"
-    key    = "drift-detection-demo-yor/terraform.tfstate"
-    region = "us-east-1"
-  }
 }
 
 provider "aws" {
