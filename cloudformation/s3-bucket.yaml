@@ -4,7 +4,7 @@ Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub 'cf-demo-bucket-${AWS::AccountId}'
+      BucketName: !Sub 'Drift-detection-demo-yor-cf-demo-bucket-${AWS::AccountId}'
       Tags:
         - Key: Environment
           Value: Dev
