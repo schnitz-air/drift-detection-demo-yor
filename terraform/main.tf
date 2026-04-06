@@ -55,9 +55,17 @@ resource "aws_s3_bucket" "drift_bucket" {
 # Misconfiguration: No encryption enabled
 # Misconfiguration: No versioning enabled
 # Misconfiguration: ACL set to public-read (if supported by account settings)
-resource "aws_s3_bucket_acl" "drift_bucket_acl" {
+resource "aws_s3_bucket_ownership_controls" "drift_bucket_ownership" {
   bucket = aws_s3_bucket.drift_bucket.id
-  acl    = "public-read"
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "drift_bucket_acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.drift_bucket_ownership]
+  bucket     = aws_s3_bucket.drift_bucket.id
+  acl        = "public-read"
 }
 
 resource "aws_s3_bucket_public_access_block" "drift_bucket_public_access" {
