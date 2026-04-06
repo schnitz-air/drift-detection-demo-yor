@@ -18,7 +18,7 @@ resource "aws_vpc" "drift_demo" {
   enable_dns_support   = true
 
   tags = {
-    Name                 = "drift-detection-demo-bucket"
+    Name                 = "Drift-Demo-YOR"
     Environment          = "Dev"
     yor_name             = "drift_demo"
     yor_trace            = "86eb5fa6-36b2-4d51-95e5-1c3fa394e11d"
