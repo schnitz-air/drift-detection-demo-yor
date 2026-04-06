@@ -24,6 +24,15 @@ resource "aws_vpc" "drift_demo" {
   enable_dns_support   = true
 
   tags = {
-    Name = "Drift-Demo-YOR"
+    Name                 = "Drift-Demo-YOR"
+    git_commit           = "fc712ea721ce601f923f01268134459f20e79723"
+    git_file             = "terraform/main.tf"
+    git_last_modified_at = "2026-04-06 16:49:51"
+    git_last_modified_by = "amit.schnitzer@gmail.com"
+    git_modifiers        = "amit.schnitzer"
+    git_org              = "schnitz-air"
+    git_repo             = "drift-detection-demo-yor"
+    yor_name             = "drift_demo"
+    yor_trace            = "26fbee82-4016-4028-85c1-55566263fef0"
   }
 }
