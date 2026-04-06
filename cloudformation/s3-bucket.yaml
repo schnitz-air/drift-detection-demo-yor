@@ -12,3 +12,17 @@ Resources:
           Value: e712e53a-d146-422c-b417-653e30c99756
         - Key: yor_name
           Value: S3Bucket
+        - Key: git_commit
+          Value: 85b80262410ceef37b2910d4f119ba4101d0b929
+        - Key: git_repo
+          Value: drift-detection-demo-yor
+        - Key: git_org
+          Value: schnitz-air
+        - Key: git_modifiers
+          Value: amit.schnitzer
+        - Key: git_last_modified_by
+          Value: amit.schnitzer@gmail.com
+        - Key: git_last_modified_at
+          Value: "2026-04-06 14:37:09"
+        - Key: git_file
+          Value: cloudformation/s3-bucket.yaml
