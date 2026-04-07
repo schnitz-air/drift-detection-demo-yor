@@ -105,8 +105,16 @@ resource "aws_security_group" "vulnerable_sg" {
   }
 
   tags = {
-    Name     = "vulnerable-sg-drift-demo"
-    yor_name = "vulnerable_sg"
+    Name                 = "vulnerable-sg-drift-demo"
+    yor_name             = "vulnerable_sg"
+    git_commit           = "a946e98afe8e080a088c964b07c2baaf6b5be940"
+    git_file             = "terraform/main.tf"
+    git_last_modified_at = "2026-04-07 19:34:35"
+    git_last_modified_by = "amit.schnitzer@gmail.com"
+    git_modifiers        = "amit.schnitzer"
+    git_org              = "schnitz-air"
+    git_repo             = "drift-detection-demo-yor"
+    yor_trace            = "c3b55b63-805a-4bd5-ae0f-e508a5c360f6"
   }
 }
 
@@ -128,8 +136,16 @@ resource "aws_iam_role" "vulnerable_role" {
   })
 
   tags = {
-    Name     = "vulnerable-role-drift-demo"
-    yor_name = "vulnerable_role"
+    Name                 = "vulnerable-role-drift-demo"
+    yor_name             = "vulnerable_role"
+    git_commit           = "a946e98afe8e080a088c964b07c2baaf6b5be940"
+    git_file             = "terraform/main.tf"
+    git_last_modified_at = "2026-04-07 19:34:35"
+    git_last_modified_by = "amit.schnitzer@gmail.com"
+    git_modifiers        = "amit.schnitzer"
+    git_org              = "schnitz-air"
+    git_repo             = "drift-detection-demo-yor"
+    yor_trace            = "b80e3a27-2b18-4826-bdd7-284a8dc598c3"
   }
 }
 
@@ -161,7 +177,15 @@ resource "aws_network_acl" "vulnerable_nacl" {
   }
 
   tags = {
-    Name     = "vulnerable-nacl-drift-demo"
-    yor_name = "vulnerable_nacl"
+    Name                 = "vulnerable-nacl-drift-demo"
+    yor_name             = "vulnerable_nacl"
+    git_commit           = "a946e98afe8e080a088c964b07c2baaf6b5be940"
+    git_file             = "terraform/main.tf"
+    git_last_modified_at = "2026-04-07 19:34:35"
+    git_last_modified_by = "amit.schnitzer@gmail.com"
+    git_modifiers        = "amit.schnitzer"
+    git_org              = "schnitz-air"
+    git_repo             = "drift-detection-demo-yor"
+    yor_trace            = "98a0f69f-68b3-4bff-aa60-8f34d5b32e89"
   }
 }
