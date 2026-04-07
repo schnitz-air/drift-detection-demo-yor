@@ -76,3 +76,92 @@ resource "aws_s3_bucket_public_access_block" "drift_bucket_public_access" {
   ignore_public_acls      = false
   restrict_public_buckets = false
 }
+
+# Misconfiguration: Security Group with overly permissive ingress (0.0.0.0/0)
+resource "aws_security_group" "vulnerable_sg" {
+  name        = "vulnerable-sg-drift-demo"
+  description = "Security group with overly permissive rules"
+  vpc_id      = aws_vpc.drift_demo.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Vulnerability: SSH open to the world
+  }
+
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Vulnerability: RDP open to the world
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name     = "vulnerable-sg-drift-demo"
+    yor_name = "vulnerable_sg"
+  }
+}
+
+# Misconfiguration: IAM Role with overly permissive policy (AdministratorAccess)
+resource "aws_iam_role" "vulnerable_role" {
+  name = "vulnerable-role-drift-demo"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  tags = {
+    Name     = "vulnerable-role-drift-demo"
+    yor_name = "vulnerable_role"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "vulnerable_attach" {
+  role       = aws_iam_role.vulnerable_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess" # Vulnerability: Overly permissive
+}
+
+# Misconfiguration: Network ACL with overly permissive rules
+resource "aws_network_acl" "vulnerable_nacl" {
+  vpc_id = aws_vpc.drift_demo.id
+
+  ingress {
+    protocol   = "-1"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  egress {
+    protocol   = "-1"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name     = "vulnerable-nacl-drift-demo"
+    yor_name = "vulnerable_nacl"
+  }
+}
