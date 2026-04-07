@@ -35,8 +35,7 @@ jobs:
         git add .
         if [ -n "$(git status --porcelain)" ]; then
           git commit -m "chore: add yor tags [skip ci]"
-          git pull --rebase origin ${GITHUB_REF_NAME}
-          git push origin ${GITHUB_REF_NAME}
+          git push origin HEAD:${GITHUB_REF_NAME} --force
         else
           echo "No changes to commit"
         fi
